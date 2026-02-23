@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPI International via NIPL — MY Checkout</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --rzp:#3B5EC6;
+  --rzp-light:#E8EDFB;
+  --bg:#F6F7F9;
+  --white:#fff;
+  --border:#E8EAF0;
+  --txt:#111827;
+  --txt-secondary:#4B5563;
+  --muted:#9CA3AF;
+  --green:#059669;
+  --green-bg:#ECFDF5;
+  --green-border:#A7F3D0;
+  --red:#DC2626;
+  --red-bg:#FEF2F2;
+  --red-border:#FECACA;
+  --amber:#D97706;
+  --amber-bg:#FFFBEB;
+  --amber-border:#FDE68A;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 16px rgba(0,0,0,.08);
+  --shadow-lg:0 8px 40px rgba(0,0,0,.12);
+  --radius:12px;
+}
+html,body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+
+/* DECK & SLIDES */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .4s ease,transform .4s ease;transform:scale(.98)}
+.slide.active{opacity:1;pointer-events:auto;transform:scale(1)}
+
+/* ==================== TITLE SLIDE ==================== */
+.title-slide{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#0B1120 0%,#111D3A 30%,#1A2D5A 60%,#243B6E 100%);
+  color:#fff;text-align:center;padding:60px;
+  position:relative;overflow:hidden;
+  width:100vw;height:100vh;
+}
+.title-slide::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 120%, rgba(59,94,198,.35) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(59,94,198,.15) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 80% 30%, rgba(99,140,255,.1) 0%, transparent 50%);
+}
+.title-slide::after{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity:.5;
+}
+.t-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;max-width:640px}
+.t-badge{
+  padding:6px 16px;border-radius:20px;
+  background:rgba(59,94,198,.2);border:1px solid rgba(59,94,198,.3);
+  font-size:11px;font-weight:500;letter-spacing:.3px;
+  color:rgba(255,255,255,.7);margin-bottom:32px;
+  backdrop-filter:blur(8px);
+}
+.t-h1{
+  font-size:56px;font-weight:800;letter-spacing:-2px;line-height:1.1;margin-bottom:16px;
+}
+.t-h1 span{
+  background:linear-gradient(135deg,#638CFF,#93B4FF);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.t-sub{
+  font-size:17px;font-weight:300;color:rgba(255,255,255,.45);
+  max-width:420px;line-height:1.7;margin-bottom:44px;letter-spacing:.1px;
+}
+.t-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.t-chip{
+  padding:8px 16px;border-radius:8px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  font-size:12px;color:rgba(255,255,255,.4);font-weight:400;
+  backdrop-filter:blur(4px);
+}
+.t-chip b{color:rgba(255,255,255,.85);font-weight:600}
+.t-foot{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  font-size:11px;color:rgba(255,255,255,.2);font-weight:400;letter-spacing:.3px;
+  z-index:1;
+}
+
+/* ==================== CONTENT SLIDES ==================== */
+.c-slide{display:flex;height:100vh}
+
+/* Left panel */
+.left{
+  flex:0 0 380px;background:var(--white);
+  padding:48px 36px;
+  display:flex;flex-direction:column;justify-content:center;gap:24px;
+  border-right:1px solid var(--border);
+  position:relative;
+}
+
+.l-num{
+  font-size:10px;font-weight:600;color:var(--muted);
+  letter-spacing:1.5px;text-transform:uppercase;
+}
+.l-title{display:flex;align-items:center;gap:10px;margin-top:6px}
+.l-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.l-dot.g{background:var(--green)}
+.l-dot.r{background:var(--red)}
+.l-name{font-size:20px;font-weight:700;letter-spacing:-.4px;color:var(--txt)}
+
+.l-story{font-size:14px;color:var(--txt-secondary);line-height:1.7}
+.l-story b{color:var(--txt);font-weight:600}
+
+.l-divider{height:1px;background:var(--border)}
+
+.l-note{
+  font-size:13px;line-height:1.65;
+  color:var(--amber);background:var(--amber-bg);
+  border:1px solid var(--amber-border);border-radius:var(--radius);
+  padding:16px 18px;
+}
+.l-note strong{font-weight:600;color:#92400E}
+
+.l-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px 16px;
+  font-size:12px;line-height:1.6;color:var(--txt-secondary);
+}
+.l-card+.l-card{margin-top:8px}
+.l-card strong{color:var(--txt);font-weight:600}
+.l-card p{margin-top:4px}
+.l-tag{
+  display:inline-block;font-size:10px;font-weight:600;
+  padding:3px 8px;border-radius:4px;letter-spacing:.2px;
+}
+.l-tag.grn{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.l-tag.rd{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+
+/* Right panel */
+.right{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  gap:28px;padding:32px;overflow:hidden;
+  background:var(--bg);
+}
+
+/* Screen images */
+.s-img{
+  max-height:calc(100vh - 100px);width:auto;
+  border-radius:16px;
+  box-shadow:var(--shadow-lg);
+  object-fit:contain;
+  border:1px solid rgba(0,0,0,.06);
+}
+.s-img.dual{max-height:calc(100vh - 130px)}
+
+.s-col{display:flex;flex-direction:column;align-items:center;gap:8px}
+.s-label{
+  font-size:10px;font-weight:600;padding:4px 10px;
+  border-radius:6px;letter-spacing:.2px;
+}
+.s-label.grn{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.s-label.rd{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+
+/* ==================== NAV ==================== */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 40px;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-top:1px solid var(--border);z-index:100;
+}
+.nav-ct{font-size:11px;color:var(--muted);font-weight:500;min-width:50px}
+.nav-dots{display:flex;gap:6px}
+.nd{
+  width:7px;height:7px;border-radius:50%;
+  background:#D1D5DB;cursor:pointer;transition:all .25s ease;
+}
+.nd.on{background:var(--rzp);width:22px;border-radius:4px}
+.nav-btns{display:flex;gap:6px}
+.nb{
+  width:32px;height:32px;border-radius:8px;
+  border:1px solid var(--border);background:var(--white);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .15s ease;color:var(--txt-secondary);
+}
+.nb:hover{border-color:var(--rzp);color:var(--rzp);background:var(--rzp-light)}
+.nb:disabled{opacity:.25;cursor:default;background:var(--white);border-color:var(--border);color:var(--txt-secondary)}
+.nb svg{width:14px;height:14px}
+
+.figlink{
+  position:fixed;top:14px;right:40px;
+  font-size:10px;color:var(--rzp);text-decoration:none;font-weight:500;
+  opacity:.3;z-index:100;transition:opacity .2s;
+}
+.figlink:hover{opacity:1}
+
+/* ==================== SECTION SLIDE ==================== */
+.section-slide{
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#0F1729 0%,#162044 40%,#1E2F5E 100%);
+  color:#fff;text-align:center;padding:60px;
+  overflow:hidden;
+}
+.section-slide::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 100%, rgba(59,94,198,.2) 0%, transparent 70%);
+}
+.sec-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+.sec-phase{
+  font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:20px;
+}
+.sec-h2{
+  font-size:42px;font-weight:700;letter-spacing:-1.5px;line-height:1.15;margin-bottom:12px;
+}
+.sec-h2 span{color:#7EB6FF}
+.sec-sub{
+  font-size:15px;font-weight:300;color:rgba(255,255,255,.35);
+  max-width:400px;line-height:1.7;
+}
+
+/* Keyboard hint */
+.kbd-hint{
+  position:fixed;bottom:56px;right:40px;
+  font-size:9px;color:var(--muted);z-index:100;
+  opacity:0;transition:opacity 1s ease 2s;
+  pointer-events:none;
+}
+.kbd-hint.show{opacity:1}
+</style>
+</head>
+<body>
+<a class="figlink" href="https://www.figma.com/design/R15y2igvWGBXgZctqq1WZF/MY-Checkout?node-id=345-3207" target="_blank">Figma &#8599;</a>
+<div class="kbd-hint show" id="kbdHint">Use arrow keys to navigate</div>
+
+<div class="deck" id="deck">
+
+<!-- TITLE -->
+<div class="slide title-slide active" data-i="0">
+  <div class="t-inner">
+    <div class="t-badge">Razorpay &middot; MY Checkout</div>
+    <h1 class="t-h1">UPI International<br>via <span>NIPL</span></h1>
+    <p class="t-sub">Adapting the checkout payment experience based on customer geography.</p>
+    <div class="t-chips">
+      <div class="t-chip"><b>4 scenarios</b> &middot; Geo detection</div>
+      <div class="t-chip"><b>UPI</b> &middot; Alipay+ &middot; TNG</div>
+      <div class="t-chip"><b>NIPL limit</b> &middot; &#8377;2L cap</div>
+    </div>
+  </div>
+  <div class="t-foot">Gopi Bhatnagar &middot; Design Review</div>
+</div>
+
+<!-- PHASE 1 SECTION -->
+<div class="slide section-slide" data-i="1">
+  <div class="sec-inner">
+    <div class="sec-phase">Phase 1</div>
+    <h2 class="sec-h2"><span>MY Checkout</span> Changes</h2>
+    <p class="sec-sub">Geo-based payment method selection across 4 customer scenarios.</p>
+  </div>
+</div>
+
+<!-- 1: Detected | Malaysian -->
+<div class="slide c-slide" data-i="2">
+  <div class="left">
+    <div>
+      <div class="l-num">SCENARIO 1 OF 4</div>
+      <div class="l-title"><span class="l-dot g"></span><span class="l-name">Detected | Malaysian</span></div>
+    </div>
+    <div class="l-story">Customer geo detected as <b>Malaysian</b> — recommend their default local wallet.</div>
+    <div class="l-divider"></div>
+    <div class="l-note">Recommend <strong>TNG eWallet</strong> (default wallet). UPI and Alipay+ optional for customers accustomed to these methods.</div>
+  </div>
+  <div class="right">
+    <img class="s-img" src="Detected _ Malaysian.png" alt="Malaysian checkout - TNG eWallet recommended">
+  </div>
+</div>
+
+<!-- 2: Detected | India -->
+<div class="slide c-slide" data-i="3">
+  <div class="left">
+    <div>
+      <div class="l-num">SCENARIO 2 OF 4</div>
+      <div class="l-title"><span class="l-dot g"></span><span class="l-name">Detected | India</span></div>
+    </div>
+    <div class="l-story">Customer detected as <b>Indian</b> — UPI is primary, but amount limits apply.</div>
+    <div class="l-divider"></div>
+    <div class="l-card">
+      <div class="l-tag grn">Txn &lt; &#8377;2L</div>
+      <p>UPI recommended with app intents. INR &amp; MYR on footer.</p>
+    </div>
+    <div class="l-card">
+      <div class="l-tag rd">Txn &gt; &#8377;2L</div>
+      <p><strong>FTUX:</strong> All methods shown, UPI disabled.<br><strong>RTUX:</strong> Saved card / past successful method.</p>
+    </div>
+  </div>
+  <div class="right">
+    <div class="s-col">
+      <div class="s-label grn">Txn &lt; &#8377;2L</div>
+      <img class="s-img dual" src="Detected _ India   - amount _ 2L.png" alt="India checkout under 2L - UPI recommended">
+    </div>
+    <div class="s-col">
+      <div class="s-label rd">Txn &gt; &#8377;2L</div>
+      <img class="s-img dual" src="Detected _ India  more than 2L.png" alt="India checkout over 2L - Saved cards, UPI disabled">
+    </div>
+  </div>
+</div>
+
+<!-- 3: Detected | South-east Asians -->
+<div class="slide c-slide" data-i="4">
+  <div class="left">
+    <div>
+      <div class="l-num">SCENARIO 3 OF 4</div>
+      <div class="l-title"><span class="l-dot g"></span><span class="l-name">Detected | South-east Asians</span></div>
+    </div>
+    <div class="l-story">Customer from an <b>Alipay+ supported country</b> — recommend their local wallet.</div>
+    <div class="l-divider"></div>
+    <div class="l-note">Recommend <strong>Alipay+ wallet</strong> used in that geo (e.g. GCash for Philippines). UPI available in all methods.</div>
+  </div>
+  <div class="right">
+    <img class="s-img" src="Detected _ South-east Asians.png" alt="South-east Asian checkout - GCash recommended via Alipay+">
+  </div>
+</div>
+
+<!-- 4: Not Detected -->
+<div class="slide c-slide" data-i="5">
+  <div class="left">
+    <div>
+      <div class="l-num">SCENARIO 4 OF 4</div>
+      <div class="l-title"><span class="l-dot r"></span><span class="l-name">Not Detected</span></div>
+    </div>
+    <div class="l-story">Can't detect customer geography — <b>default to Malaysian</b> experience.</div>
+    <div class="l-divider"></div>
+    <div class="l-note">When geo is unknown, <strong>consider as Malaysian</strong>. Safest fallback for a Malaysia-based merchant.</div>
+  </div>
+  <div class="right">
+    <img class="s-img" src="Detected _ Malaysian.png" alt="Not detected fallback - Malaysian checkout">
+  </div>
+</div>
+
+</div>
+
+<div class="nav">
+  <span class="nav-ct" id="ct">Intro</span>
+  <div class="nav-dots" id="dots"><div class="nd on" data-i="0"></div><div class="nd" data-i="1"></div><div class="nd" data-i="2"></div><div class="nd" data-i="3"></div><div class="nd" data-i="4"></div><div class="nd" data-i="5"></div></div>
+  <div class="nav-btns">
+    <button class="nb" id="pB" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <button class="nb" id="nB"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+  </div>
+</div>
+
+<script>
+const sl=document.querySelectorAll('.slide'),ds=document.querySelectorAll('.nd'),ct=document.getElementById('ct'),pB=document.getElementById('pB'),nB=document.getElementById('nB'),kh=document.getElementById('kbdHint');
+const lb=['Intro','Phase 1','1 / 4','2 / 4','3 / 4','4 / 4'];
+let c=0;
+function go(n){
+  if(n<0||n>=sl.length||n===c)return;
+  sl[c].classList.remove('active');
+  c=n;
+  sl[c].classList.add('active');
+  ds.forEach((d,i)=>d.classList.toggle('on',i===c));
+  ct.textContent=lb[c];
+  pB.disabled=c===0;
+  nB.disabled=c===sl.length-1;
+  if(kh)kh.style.opacity='0';
+}
+pB.onclick=()=>go(c-1);
+nB.onclick=()=>go(c+1);
+ds.forEach(d=>d.onclick=()=>go(+d.dataset.i));
+document.onkeydown=e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ')go(c+1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(c-1);
+};
+</script>
+</body>
+</html>
